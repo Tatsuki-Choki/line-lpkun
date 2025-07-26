@@ -93,38 +93,50 @@ const FreeContent = styled.div`
 
 const BlurredSection = styled.div`
   position: relative;
-  padding: 2rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  margin-bottom: 2rem;
+  padding: 2rem 0;
+  margin-bottom: 0.5rem;
 `
 
 const BlurredContent = styled.div`
-  filter: blur(4px);
+  position: relative;
   color: #666;
   line-height: 1.8;
   user-select: none;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.6) 30%,
+      rgba(255, 255, 255, 0.8) 60%,
+      rgba(255, 255, 255, 0.95) 100%
+    );
+    z-index: 1;
+  }
+  
+  & > * {
+    filter: blur(3px);
+  }
 `
 
 const PriceNote = styled.div`
   text-align: center;
   color: #666;
   font-size: 0.875rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 `
 
 const LoginPrompt = styled.div`
   text-align: center;
-  padding: 2rem;
-  background-color: #e3f2fd;
-  border-radius: 12px;
+  padding: 1rem 0;
 `
 
-const LoginText = styled.p`
-  font-size: 1.125rem;
-  color: #333;
-  margin-bottom: 1.5rem;
-`
 
 const LoginLink = styled.a`
   display: inline-block;
@@ -214,7 +226,6 @@ const Preview = ({ data }) => {
             )}
             
             <LoginPrompt>
-              <LoginText>続きを読むにはLINE登録が必要です</LoginText>
               <LoginLink href={data.lineUrl || '#'}>
                 LINE友達追加して続きを読む
               </LoginLink>

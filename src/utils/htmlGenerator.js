@@ -100,39 +100,50 @@ export const generateLandingPageHtml = (formData) => {
         
         .blurred-section {
             position: relative;
-            padding: 2rem;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            margin-bottom: 2rem;
+            padding: 2rem 0;
+            margin-bottom: 0.5rem;
         }
         
         .blurred-content {
-            filter: blur(4px);
+            position: relative;
             color: #666;
             line-height: 1.8;
             user-select: none;
+        }
+        
+        .blurred-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.6) 30%,
+                rgba(255, 255, 255, 0.8) 60%,
+                rgba(255, 255, 255, 0.95) 100%
+            );
+            z-index: 1;
+        }
+        
+        .blurred-content > * {
+            filter: blur(3px);
         }
         
         .price-note {
             text-align: center;
             color: #666;
             font-size: 0.875rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
         
         .login-prompt {
             text-align: center;
-            padding: 2rem;
-            background-color: #e3f2fd;
-            border-radius: 12px;
-            margin-bottom: 2rem;
+            padding: 1rem 0;
         }
         
-        .login-text {
-            font-size: 1.125rem;
-            color: #333;
-            margin-bottom: 1.5rem;
-        }
         
         .login-link {
             display: inline-block;
@@ -199,7 +210,6 @@ export const generateLandingPageHtml = (formData) => {
             </div>
             
             <div class="login-prompt">
-                <p class="login-text">続きを読むにはLINE登録が必要です</p>
                 <a href="${escapeHtml(formData.lineUrl)}" class="login-link">LINE友達追加して続きを読む</a>
             </div>
         </div>
