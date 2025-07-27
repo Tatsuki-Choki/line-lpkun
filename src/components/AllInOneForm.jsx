@@ -141,6 +141,13 @@ const FileInfo = styled.p`
   margin-top: 0.5rem;
   font-size: 0.75rem;
   color: #94a3b8;
+  line-height: 1.4;
+  
+  br {
+    display: block;
+    content: "";
+    margin: 0.2rem 0;
+  }
 `
 
 const ErrorMessage = styled.div`
@@ -258,13 +265,33 @@ const PreviewText = styled.div`
 `
 
 const BlurredText = styled.div`
-  filter: blur(4px);
   color: #64748b;
   line-height: 1.6;
   padding: 1rem;
   background-color: white;
   border-radius: 8px;
   margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 25%,
+      rgba(255, 255, 255, 0.4) 40%,
+      rgba(255, 255, 255, 0.8) 60%,
+      rgba(255, 255, 255, 0.95) 80%,
+      white 100%
+    );
+    pointer-events: none;
+  }
 `
 
 const AllInOneForm = ({ formData, onUpdate, onComplete, isComplete, onReset }) => {
@@ -370,9 +397,6 @@ const AllInOneForm = ({ formData, onUpdate, onComplete, isComplete, onReset }) =
           <SectionNumber>1</SectionNumber>
           サイトタイトル
         </SectionTitle>
-        <SectionDescription>
-          ランディングページのタイトルを入力してください
-        </SectionDescription>
         <Input
           type="text"
           value={formData.siteTitle}
@@ -388,9 +412,6 @@ const AllInOneForm = ({ formData, onUpdate, onComplete, isComplete, onReset }) =
           <SectionNumber>2</SectionNumber>
           お名前とアイコン
         </SectionTitle>
-        <SectionDescription>
-          著者名を入力し、アイコン画像をアップロードできます（オプション）
-        </SectionDescription>
         <NameInputWrapper>
           {iconPreview ? (
             <IconImage src={iconPreview} alt="アイコン" />
@@ -418,9 +439,13 @@ const AllInOneForm = ({ formData, onUpdate, onComplete, isComplete, onReset }) =
             id="icon-upload"
           />
           <UploadButton htmlFor="icon-upload">
-            アイコン画像を選択
+            画像を選択
           </UploadButton>
-          <FileInfo>対応形式: JPG, PNG, GIF（最大2MB）</FileInfo>
+          <FileInfo>
+            対応形式:<br />
+            JPG, PNG, GIF, WebP, BMP<br />
+            SVG（最大2MB）
+          </FileInfo>
           {iconPreview && (
             <RemoveButton onClick={removeIcon}>削除</RemoveButton>
           )}
@@ -479,7 +504,18 @@ const AllInOneForm = ({ formData, onUpdate, onComplete, isComplete, onReset }) =
           placeholder="例: 実は、LINE集客で成功するためには、誰も教えてくれない3つの秘密があります..."
         />
         {formData.blurContent && (
-          <BlurredText>{formData.blurContent}</BlurredText>
+          <BlurredText>
+            {formData.blurContent.split('\n').map((line, index) => (
+              <div key={index} style={{
+                filter: index === 0 ? 'none' : 
+                       index === 1 ? 'blur(2px)' : 
+                       'blur(6px)',
+                marginBottom: '0.5rem'
+              }}>
+                {line || '\u00A0'}
+              </div>
+            ))}
+          </BlurredText>
         )}
       </Section>
 
